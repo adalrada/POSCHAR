@@ -7,6 +7,8 @@ namespace POSCHAR.Email
 {
     public class EmailOptions
     {
+        //CHANGEEE
+        //CHANGE
         public string SendGridKey { get; set; }
     }
 }
