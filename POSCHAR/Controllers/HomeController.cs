@@ -20,6 +20,13 @@ namespace POSCHAR.Controllers
 
         public IActionResult Index()
         {
+            if (true)
+            {
+                foreach (var item in collection)
+                {
+
+                }
+            }
             return View();
         }
 
