@@ -20,9 +20,13 @@ namespace POSCHAR.Controllers
 
         public IActionResult Index()
         {
+            foreach (var item in collection)
+            {
+
+            }
             return View();
         }
-
+ 
         public IActionResult Privacy()
         {
             return View();
