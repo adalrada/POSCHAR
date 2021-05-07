@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace POSCHAR.Email
 {
+    //CHANGE
     public class EmailSender : IEmailSender
     {
         public EmailOptions Options { get; set; }
