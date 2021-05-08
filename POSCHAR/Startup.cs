@@ -36,25 +36,20 @@ namespace POSCHAR
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            //if (env.IsDevelopment())
-            //{
-            //    services.AddDbContext<ApplicationDbContext>(options =>
-            //      options.UseSqlServer(
-            //           Configuration.GetConnectionString("DefaultConnection")));
-            //}
-            //else
-            //{
+            //DB Connection
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(
                 Configuration.GetConnectionString("SqLiteConnection")));
-            //// }
-
+            //Login with Identity
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddTransient<IRepository, Repository>();
 
+            //Resources Injection
+            services.AddTransient<IRepository, Repository>();
             services.Configure<EmailOptions>(Configuration);
+
+            //Default Options to autocreate views and controllers
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

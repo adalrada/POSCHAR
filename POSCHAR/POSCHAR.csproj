@@ -22,5 +22,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts" Version="3.1.2" />
+    <PackageReference Include="NuGet.PackageManagement" Version="5.9.1" />
   </ItemGroup>
 </Project>
