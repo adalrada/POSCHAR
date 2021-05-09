@@ -14,8 +14,12 @@ namespace POSCHAR.Models
         [DisplayName("Descripción")]
         public string Description { get; set; }
         [DisplayName("Fecha")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTimeOffset? SaleOrderDate { get; set; } = DateTime.Now;
         [DisplayName("Fecha de entrega")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTimeOffset? SaleDeliveryDate { get; set; }
         [DisplayName("estado")]
         public string Stauts { get; set; }

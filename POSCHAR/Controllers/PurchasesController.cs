@@ -20,10 +20,19 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Purchases
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            var applicationDbContext = _context.Purchase.Include(p => p.Vendor);
-            return View(await applicationDbContext.ToListAsync());
+            var purchase = _context.Purchase.Include(s => s.Vendor).ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                purchase = _context.Purchase.Where(s => s.Vendor.Name.ToLower().Contains(search)
+                                       || s.Description.ToLower().Contains(search)
+                                       || s.Stauts.ToLower().Contains(search)
+                                       || s.SaleOrderDate.ToString().Contains(search)
+                                       ).Include(s => s.Vendor).ToListAsync();
+            }
+            return View(await purchase);
         }
 
         // GET: Purchases/Details/5
@@ -48,7 +57,7 @@ namespace POSCHAR.Controllers
         // GET: Purchases/Create
         public IActionResult Create()
         {
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Id");
+            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name");
             return View();
         }
 
@@ -61,11 +70,12 @@ namespace POSCHAR.Controllers
         {
             if (ModelState.IsValid)
             {
+                purchase.Code = Guid.NewGuid();
                 _context.Add(purchase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Id", purchase.VendorId);
+            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name", purchase.VendorId);
             return View(purchase);
         }
 
@@ -82,7 +92,7 @@ namespace POSCHAR.Controllers
             {
                 return NotFound();
             }
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Id", purchase.VendorId);
+            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name", purchase.VendorId);
             return View(purchase);
         }
 
@@ -118,7 +128,7 @@ namespace POSCHAR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Id", purchase.VendorId);
+            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name", purchase.VendorId);
             return View(purchase);
         }
 

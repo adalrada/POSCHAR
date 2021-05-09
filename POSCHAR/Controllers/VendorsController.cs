@@ -20,9 +20,20 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Vendors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Vendor.ToListAsync());
+            var vendor = _context.Vendor.ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                vendor = _context.Vendor.Where(s => s.Name.ToLower().Contains(search)
+                                       || s.Name.ToLower().Contains(search)
+                                       || s.Address.ToLower().Contains(search)
+                                       || s.Email.ToLower().Contains(search)
+                                       || s.PhoneNumber.ToString().Contains(search)
+                                       ).ToListAsync();
+            }
+            return View(await vendor);
         }
 
         // GET: Vendors/Details/5
@@ -58,6 +69,7 @@ namespace POSCHAR.Controllers
         {
             if (ModelState.IsValid)
             {
+                vendor.Code = Guid.NewGuid();
                 _context.Add(vendor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

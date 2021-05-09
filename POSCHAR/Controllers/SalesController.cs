@@ -20,10 +20,19 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Sales
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            var applicationDbContext = _context.Sale.Include(s => s.Customer);
-            return View(await applicationDbContext.ToListAsync());
+            var sale = _context.Sale.Include(s=>s.Customer).ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                sale = _context.Sale.Where(s => s.Customer.Name.ToLower().Contains(search)
+                                       || s.Description.ToLower().Contains(search)
+                                       || s.Stauts.ToLower().Contains(search)
+                                       || s.SaleOrderDate.ToString().Contains(search)
+                                       ).Include(s=>s.Customer).ToListAsync();
+            }
+            return View(await sale);
         }
 
         // GET: Sales/Details/5
@@ -48,7 +57,7 @@ namespace POSCHAR.Controllers
         // GET: Sales/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id");
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
             return View();
         }
 
@@ -65,7 +74,7 @@ namespace POSCHAR.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", sale.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
             return View(sale);
         }
 
@@ -82,7 +91,7 @@ namespace POSCHAR.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", sale.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
             return View(sale);
         }
 
@@ -118,7 +127,7 @@ namespace POSCHAR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", sale.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
             return View(sale);
         }
 

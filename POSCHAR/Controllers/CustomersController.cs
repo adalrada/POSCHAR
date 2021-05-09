@@ -25,6 +25,23 @@ namespace POSCHAR.Controllers
             return View(await _context.Customer.ToListAsync());
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string search)
+        {
+            var customers = _context.Customer.ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                customers=_context.Customer.Where(s => s.Name.ToLower().Contains(search)
+                                       || s.Email.ToLower().Contains(search)
+                                       || s.PhoneNumber.ToLower().Contains(search)
+                                       || s.Address.ToLower().Contains(search)
+                                       ).ToListAsync();
+            }
+            return View(await customers);
+        }
+
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,6 +63,7 @@ namespace POSCHAR.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            
             return View();
         }
 
@@ -58,6 +76,7 @@ namespace POSCHAR.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Code = Guid.NewGuid();
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

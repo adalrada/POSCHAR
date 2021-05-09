@@ -20,9 +20,20 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Product.ToListAsync());
+            var product = _context.Product.ToListAsync();
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                product = _context.Product.Where(s => s.Name.ToLower().Contains(search)
+                                       || s.CostPrice.ToString().Contains(search)
+                                       || s.Status.ToLower().Contains(search)
+                                       || s.Price.ToString().Contains(search)
+                                       || s.Quantity.ToString().Contains(search)
+                                       ).ToListAsync();
+            }
+            return View(await product);
         }
 
         // GET: Products/Details/5
@@ -58,6 +69,7 @@ namespace POSCHAR.Controllers
         {
             if (ModelState.IsValid)
             {
+                product.Code = Guid.NewGuid();
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

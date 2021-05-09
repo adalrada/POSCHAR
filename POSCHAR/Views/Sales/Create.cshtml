@@ -11,19 +11,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
-                <input asp-for="Code" class="form-control" />
-                <span asp-validation-for="Code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SaleOrderDate" class="control-label"></label>
-                <input asp-for="SaleOrderDate" class="form-control" />
-                <span asp-validation-for="SaleOrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleDeliveryDate" class="control-label"></label>
@@ -47,7 +37,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {

@@ -2,15 +2,42 @@
 
 @{ ViewData["Title"] = "Index"; }
 
+<script>
+    function changeSelect() {
+        $valor = document.getElementById("searchtext").value
+        $.ajax({
+            url: 'Sales/Index',
+            data: { search: $valor },
+            type: 'POST'
+        }).done(function (responseData) {
+            $("#bodypanel").html('')
+            $("#bodypanel").html(responseData)
+            console.log('Done: ', responseData);
+        }).fail(function () {
+            console.log('Failed');
+        });
+    }
+    document.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13 && !event.shiftKey) {
+            changeSelect();
+        }
+    });
+</script>
+
 <h1>Ordenes de venta</h1>
 
 <p>
     <a asp-action="Create">Crear nueva</a>
 </p>
 
+<p>
+    <label>Buscar:</label>
+    <input type="text" class="form-control" id="searchtext" name="searchtext" />
+</p>
+
 @foreach (var item in Model)
 {
-<div class="panel panel-primary">
+<div class="panel panel-primary" id="panel">
     <div class="panel-heading">
         <h1 class="panel-title">@item.Description</h1>
     </div>
@@ -25,6 +52,10 @@
             <div class="col-xs-8 col-md-9">@item.SaleOrderDate</div>
         </div>
         <div class="row">
+            <div class="col-xs-4 col-md-3">Entrega</div>
+            <div class="col-xs-8 col-md-9">@item.SaleDeliveryDate</div>
+        </div>
+        <div class="row">
             <div class="col-xs-4 col-md-3">Estado</div>
             <div class="col-xs-8 col-md-9">@item.Stauts</div>
         </div>
@@ -34,63 +65,10 @@
         </div>
     </div>
     <div class="panel-footer">
-        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+        <a asp-action="Details" asp-route-id="@item.Id">Ver detalle</a> |
+        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
     </div>
-</div>}
+</div>
+}
 
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Code)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SaleOrderDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SaleDeliveryDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Stauts)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Customer)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SaleOrderDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SaleDeliveryDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stauts)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@
