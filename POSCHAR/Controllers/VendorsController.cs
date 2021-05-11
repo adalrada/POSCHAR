@@ -20,6 +20,13 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Vendors
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Vendor.ToListAsync());
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> Index(string search)
         {
             var vendor = _context.Vendor.ToListAsync();

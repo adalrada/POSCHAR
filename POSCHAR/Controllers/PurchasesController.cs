@@ -20,6 +20,13 @@ namespace POSCHAR.Controllers
         }
 
         // GET: Purchases
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Purchase.ToListAsync());
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> Index(string search)
         {
             var purchase = _context.Purchase.Include(s => s.Vendor).ToListAsync();
