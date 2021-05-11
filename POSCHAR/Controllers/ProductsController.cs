@@ -38,8 +38,10 @@ namespace POSCHAR.Controllers
                                        || s.Status.ToLower().Contains(search)
                                        //|| s.Price.ToString().Contains(search)
                                       // || s.Quantity.ToString().Contains(search)
+
                                        ).ToListAsync();
             }
+
             return View(await product);
         }
 
