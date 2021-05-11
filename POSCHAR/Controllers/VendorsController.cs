@@ -37,7 +37,7 @@ namespace POSCHAR.Controllers
                                        || s.Name.ToLower().Contains(search)
                                        || s.Address.ToLower().Contains(search)
                                        || s.Email.ToLower().Contains(search)
-                                       || s.PhoneNumber.ToString().Contains(search)
+                                       || s.PhoneNumber.ToLower().Contains(search)
                                        ).ToListAsync();
             }
             return View(await vendor);
