@@ -34,10 +34,10 @@ namespace POSCHAR.Controllers
             {
                 search = search.ToLower();
                 product = _context.Product.Where(s => s.Name.ToLower().Contains(search)
-                                       || s.CostPrice.ToString().Contains(search)
+                                       //|| s.CostPrice.ToString().Contains(search)
                                        || s.Status.ToLower().Contains(search)
-                                       || s.Price.ToString().Contains(search)
-                                       || s.Quantity.ToString().Contains(search)
+                                       //|| s.Price.ToString().Contains(search)
+                                      // || s.Quantity.ToString().Contains(search)
                                        ).ToListAsync();
             }
             return View(await product);

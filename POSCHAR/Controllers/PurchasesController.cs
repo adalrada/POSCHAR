@@ -22,7 +22,7 @@ namespace POSCHAR.Controllers
         // GET: Purchases
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Purchase.ToListAsync());
+            return View(await _context.Purchase.Include(s => s.Vendor).ToListAsync());
         }
 
 

@@ -22,7 +22,7 @@ namespace POSCHAR.Controllers
         // GET: Sales
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sale.ToListAsync());
+            return View(await _context.Sale.Include(s=>s.Customer).ToListAsync());
         }
 
 
