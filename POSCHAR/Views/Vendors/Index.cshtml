@@ -2,17 +2,17 @@
 
 @{ ViewData["Title"] = "Index"; }
 
-<script>
-    function changeSelect() {
+<script>function changeSelect() {
         $valor = document.getElementById("searchtext").value
         $.ajax({
             url: 'Vendors/Index',
             data: { search: $valor },
             type: 'POST'
         }).done(function (responseData) {
+            var $result = $(responseData).find('#bodypanel');
+            console.log($result)
             $("#bodypanel").html('')
-            $("#bodypanel").html(responseData)
-            console.log('Done: ', responseData);
+            $("#bodypanel").html($result[0].outerHTML)
         }).fail(function () {
             console.log('Failed');
         });
@@ -21,8 +21,7 @@
         if (event.keyCode === 13 && !event.shiftKey) {
             changeSelect();
         }
-    });
-</script>
+    });</script>
 
 <h1>Proveedores</h1>
 
@@ -34,9 +33,9 @@
     <label>Buscar:</label>
     <input type="text" class="form-control" id="searchtext" name="searchtext" />
 </p>
-
-@foreach (var item in Model)
-{
+<div id="bodypanel">
+    @foreach (var item in Model)
+    {
 <div class="panel panel-primary" id="panel">
     <div class="panel-heading">
         <h1 class="panel-title">@item.Name</h1>
@@ -66,3 +65,4 @@
         <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
     </div>
 </div>}
+</div>
