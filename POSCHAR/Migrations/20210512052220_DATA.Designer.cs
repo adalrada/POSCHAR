@@ -9,8 +9,8 @@ using POSCHAR.Data;
 namespace POSCHAR.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210508183952_POSCHARDB")]
-    partial class POSCHARDB
+    [Migration("20210512052220_DATA")]
+    partial class DATA
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -246,6 +246,9 @@ namespace POSCHAR.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("Code")
                         .HasColumnType("TEXT");
 
@@ -366,7 +369,7 @@ namespace POSCHAR.Migrations
                     b.Property<DateTimeOffset?>("SaleOrderDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Stauts")
+                    b.Property<string>("Status")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

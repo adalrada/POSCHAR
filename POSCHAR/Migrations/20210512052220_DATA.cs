@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace POSCHAR.Migrations
 {
-    public partial class POSCHARDB : Migration
+    public partial class DATA : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,7 +75,8 @@ namespace POSCHAR.Migrations
                     Price = table.Column<decimal>(nullable: false),
                     CostPrice = table.Column<decimal>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: true)
+                    Status = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,7 +216,7 @@ namespace POSCHAR.Migrations
                     Description = table.Column<string>(nullable: true),
                     SaleOrderDate = table.Column<DateTimeOffset>(nullable: true),
                     SaleDeliveryDate = table.Column<DateTimeOffset>(nullable: true),
-                    Stauts = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
                     CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

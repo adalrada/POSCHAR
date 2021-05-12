@@ -35,7 +35,7 @@ namespace POSCHAR.Controllers
                 search = search.ToLower();
                 sale = _context.Sale.Where(s => s.Customer.Name.ToLower().Contains(search)
                                        || s.Description.ToLower().Contains(search)
-                                       || s.Stauts.ToLower().Contains(search)
+                                       || s.Status.ToLower().Contains(search)
                                        || s.SaleOrderDate.ToString().Contains(search)
                                        ).Include(s=>s.Customer).ToListAsync();
             }
@@ -79,7 +79,7 @@ namespace POSCHAR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Description,SaleOrderDate,SaleDeliveryDate,Stauts,CustomerId")] Sale sale)
+        public async Task<IActionResult> Create([Bind("Id,Code,Description,SaleOrderDate,SaleDeliveryDate,Status,CustomerId")] Sale sale)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace POSCHAR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
-            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Stauts);
+            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Status);
             return View(sale);
         }
 
@@ -119,7 +119,7 @@ namespace POSCHAR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Description,SaleOrderDate,SaleDeliveryDate,Stauts,CustomerId")] Sale sale)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Description,SaleOrderDate,SaleDeliveryDate,Status,CustomerId")] Sale sale)
         {
             if (id != sale.Id)
             {
@@ -147,7 +147,7 @@ namespace POSCHAR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
-            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Stauts);
+            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Status);
             return View(sale);
         }
 

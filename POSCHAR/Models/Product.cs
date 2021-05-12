@@ -24,8 +24,10 @@ namespace POSCHAR.Models
         public int Quantity { get; set; }
         [DisplayName("Estado")]
         public string Status { get; set; }
+        [DisplayName("Categoría")]
+        public string Category { get; set; }
 
-       
+
 
 
     }

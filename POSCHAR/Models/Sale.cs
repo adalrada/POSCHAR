@@ -23,7 +23,7 @@ namespace POSCHAR.Models
         [DataType(DataType.Date)]
         public DateTimeOffset? SaleDeliveryDate { get; set; }
         [DisplayName("estado")]
-        public string Stauts { get; set; }
+        public string Status { get; set; }
         //Foreigns Keys
         [DisplayName("Cliente")]
         public int CustomerId { get; set; }
