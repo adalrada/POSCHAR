@@ -25,7 +25,6 @@ namespace POSCHAR.Controllers
             return View(await _context.Product.ToListAsync());
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Index(string search)
         {
