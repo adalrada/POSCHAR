@@ -69,6 +69,10 @@ namespace POSCHAR.Controllers
                 new SelectListItem { Value = "Activo", Text = "Activo" },
                 new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
             };
+            ViewData["TypeValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Producto", Text = "Producto" },
+                new SelectListItem { Value = "Servicio", Text = "Servicio" }
+            };
             return View();
         }
 
@@ -86,6 +90,8 @@ namespace POSCHAR.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["StatusValue"] = new SelectList(_context.Product, "Value", "Text", product.Status);
+            ViewData["TypeValue"] = new SelectList(_context.Product, "Value", "Text", product.Type);
             return View(product);
         }
 
@@ -100,7 +106,15 @@ namespace POSCHAR.Controllers
             var product = await _context.Product.FindAsync(id);
             product.CostPrice = Convert.ToInt32(product.CostPrice);
             product.Price = Convert.ToInt32(product.Price);
-            
+
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Activo", Text = "Activo" },
+                new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
+            };
+            ViewData["TypeValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Producto", Text = "Producto" },
+                new SelectListItem { Value = "Servicio", Text = "Servicio" }
+            };
 
             if (product == null)
             {
@@ -116,6 +130,8 @@ namespace POSCHAR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Type,Name,Price,CostPrice,Quantity,Status")] Product product)
         {
+            ViewData["StatusValue"] = new SelectList(_context.Product, "Value", "Text", product.Status);
+            ViewData["TypeValue"] = new SelectList(_context.Product, "Value", "Text", product.Type);
             if (id != product.Id)
             {
                 return NotFound();
