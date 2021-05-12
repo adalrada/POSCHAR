@@ -66,6 +66,10 @@ namespace POSCHAR.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Activo", Text = "Activo" },
+                new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
+            };
             return View();
         }
 

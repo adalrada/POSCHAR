@@ -65,6 +65,12 @@ namespace POSCHAR.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
+
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Activo", Text = "Activo" },
+                new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
+            };
+
             return View();
         }
 
@@ -82,6 +88,7 @@ namespace POSCHAR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
+            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Stauts);
             return View(sale);
         }
 
@@ -100,6 +107,10 @@ namespace POSCHAR.Controllers
                 return NotFound();
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Activo", Text = "Activo" },
+                new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
+            };
             return View(sale);
         }
 
@@ -136,6 +147,7 @@ namespace POSCHAR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", sale.CustomerId);
+            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", sale.Stauts);
             return View(sale);
         }
 

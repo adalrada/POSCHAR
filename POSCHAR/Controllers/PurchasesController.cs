@@ -65,6 +65,11 @@ namespace POSCHAR.Controllers
         public IActionResult Create()
         {
             ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name");
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Activo", Text = "Activo" },
+                new SelectListItem { Value = "Inactivo", Text = "Inactivo" }
+            };
+
             return View();
         }
 
@@ -83,6 +88,7 @@ namespace POSCHAR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Name", purchase.VendorId);
+            ViewData["StatusValue"] = new SelectList(_context.Vendor, "Value", "Text", purchase.Stauts);
             return View(purchase);
         }
 

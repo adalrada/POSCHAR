@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace POSCHAR.Models
 {
@@ -22,6 +24,9 @@ namespace POSCHAR.Models
         public int Quantity { get; set; }
         [DisplayName("Estado")]
         public string Status { get; set; }
+
+       
+
 
     }
 }

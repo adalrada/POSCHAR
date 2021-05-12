@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace POSCHAR.Models
 {
@@ -29,7 +30,7 @@ namespace POSCHAR.Models
         public Customer Customer { get; set; }
         [DisplayName("Linea de venta")]
         public virtual List<SalesOrderLine> SalesOrderLine { get; set; } = new List<SalesOrderLine>();
-	}
+    }
 
     public class SalesOrderLine
     {
