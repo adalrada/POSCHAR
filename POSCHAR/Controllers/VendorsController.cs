@@ -93,6 +93,7 @@ namespace POSCHAR.Controllers
             }
 
             var vendor = await _context.Vendor.FindAsync(id);
+
             if (vendor == null)
             {
                 return NotFound();

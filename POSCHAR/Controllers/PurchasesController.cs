@@ -95,6 +95,9 @@ namespace POSCHAR.Controllers
             }
 
             var purchase = await _context.Purchase.FindAsync(id);
+            
+
+
             if (purchase == null)
             {
                 return NotFound();

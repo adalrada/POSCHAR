@@ -93,6 +93,8 @@ namespace POSCHAR.Controllers
             }
 
             var customer = await _context.Customer.FindAsync(id);
+
+
             if (customer == null)
             {
                 return NotFound();

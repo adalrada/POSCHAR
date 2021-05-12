@@ -95,6 +95,10 @@ namespace POSCHAR.Controllers
             }
 
             var product = await _context.Product.FindAsync(id);
+            product.CostPrice = Convert.ToInt32(product.CostPrice);
+            product.Price = Convert.ToInt32(product.Price);
+            
+
             if (product == null)
             {
                 return NotFound();
