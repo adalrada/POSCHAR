@@ -11,7 +11,7 @@ namespace POSCHAR.Models
         [Required]
         public int Id { get; set; }
         [DisplayName("Código")]
-        public Guid Code { get; set; }
+        public Guid Code { get; set; }= Guid.NewGuid();
         [DisplayName("Descripción")]
         public string Description { get; set; }
         [DisplayName("Fecha")]
@@ -21,7 +21,7 @@ namespace POSCHAR.Models
         [DisplayName("Fecha de entrega")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
-        public DateTimeOffset? SaleDeliveryDate { get; set; }
+        public DateTimeOffset? SaleDeliveryDate { get; set; } = DateTime.Now;
         [DisplayName("estado")]
         public string Status { get; set; }
         //Foreigns Keys

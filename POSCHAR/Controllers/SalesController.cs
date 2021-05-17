@@ -19,6 +19,52 @@ namespace POSCHAR.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Ordenes de venta
+        /// </summary>
+        /// <returns></returns>
+        ///
+        public IActionResult SalePos()
+        {
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
+
+            ViewData["StatusValue"] = new List<SelectListItem>{
+                new SelectListItem { Value = "Pendiete", Text = "Pendiente" },
+                new SelectListItem { Value = "Pagada", Text = "Pagada" }
+            };
+
+            ViewData["Products"] = _context.Product.Where(s=>s.Status=="Activo").OrderBy(s=>s.Name).ToListAsync();
+            return View();
+        }
+
+        /// <summary>
+        /// Renderizar y obtener informacion extra
+        /// </summary>
+        /// <returns></returns>
+        ///
+        // GET:api/Product
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
+        {
+            return await _context.Product.ToListAsync();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetSingleProduct(int? id)
+        {
+            
+            var product = await _context.Product.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            List<Product> products = new List<Product>();
+            products.Add(product);
+
+            return products;
+        }
+
         // GET: Sales
         public async Task<IActionResult> Index()
         {
@@ -27,9 +73,12 @@ namespace POSCHAR.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search,DateTime date)
         {
-            var sale = _context.Sale.Include(s=>s.Customer).ToListAsync();
+            if (date == null) date = DateTime.Today;
+            var sale = _context.Sale.Include(s=>s.Customer).Where(s=>s.SaleOrderDate==date)
+                .OrderByDescending(s=>s.SaleOrderDate)
+                .ToListAsync();
             if (!String.IsNullOrEmpty(search))
             {
                 search = search.ToLower();
@@ -37,7 +86,10 @@ namespace POSCHAR.Controllers
                                        || s.Description.ToLower().Contains(search)
                                        || s.Status.ToLower().Contains(search)
                                        || s.SaleOrderDate.ToString().Contains(search)
-                                       ).Include(s=>s.Customer).ToListAsync();
+                                       && s.SaleOrderDate == date
+                                       ).Include(s=>s.Customer)
+                                       .OrderByDescending(s => s.SaleOrderDate)
+                                       .ToListAsync();
             }
             return View(await sale);
         }
