@@ -33,11 +33,8 @@ namespace POSCHAR.Controllers
             {
                 search = search.ToLower();
                 product = _context.Product.Where(s => s.Name.ToLower().Contains(search)
-                                       //|| s.CostPrice.ToString().Contains(search)
+                                       || s.Category.ToLower().Contains(search)
                                        || s.Status.ToLower().Contains(search)
-                                       //|| s.Price.ToString().Contains(search)
-                                      // || s.Quantity.ToString().Contains(search)
-
                                        ).ToListAsync();
             }
 
@@ -81,7 +78,7 @@ namespace POSCHAR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Type,Name,Price,CostPrice,Quantity,Status")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Code,Type,Name,Price,CostPrice,Quantity,Status,Category")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +125,7 @@ namespace POSCHAR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Type,Name,Price,CostPrice,Quantity,Status")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Type,Name,Price,CostPrice,Quantity,Status,Category")] Product product)
         {
             ViewData["StatusValue"] = new SelectList(_context.Product, "Value", "Text", product.Status);
             ViewData["TypeValue"] = new SelectList(_context.Product, "Value", "Text", product.Type);
