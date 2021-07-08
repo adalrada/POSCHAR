@@ -6,6 +6,7 @@ using POSCHAR.Models;
 
 namespace POSCHAR.Data
 {
+    //CHANGE OF TEST
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
