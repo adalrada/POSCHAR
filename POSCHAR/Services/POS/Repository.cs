@@ -7,7 +7,7 @@ namespace POSCHAR.Services.POS
 {
     public class Repository : IRepository
     {
-        //CHANGE 3.1
+        //CHANGE 3.1.1
 
         public string GeneratePONumber()
         {

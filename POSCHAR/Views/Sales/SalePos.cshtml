@@ -1,0 +1,233 @@
+﻿@model POSCHAR.Models.Sale
+@{
+    ViewData["Title"] = "POS";
+}
+
+<h1>Orden de venta</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="CustomerId" class="control-label"></label>
+            <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <select asp-for="Status" class="form-control" asp-items="ViewBag.StatusValue"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Número de orden #</label>
+            <input class="form-control" id="Code" readonly />
+            <hidden id="Code"></hidden>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="SaleDeliveryDate" class="control-label"></label>
+            <input asp-for="SaleDeliveryDate" class="form-control" />
+            <span asp-validation-for="SaleDeliveryDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+
+    <div class="row">
+        <div class="col-md-5">
+            <table class="table" id="productLine">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table" id="posLine">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Total</label>
+                        <input class="form-control" id="total" readonly />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Pago</label>
+                        <input type="number" class="form-control" id="payment" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Cambiar</label>
+                        <input class="form-control" id="change" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button onclick="initiateNewPOSOrder()" class="btn btn-block btn-primary">Guardar</button>
+                </div>
+                <div class="col-md-3">
+                    <button onclick="posLineInsert()" class="btn btn-block btn-dark">Pago total</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-block btn-light">Pago parcial</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-block btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @section Scripts{
+        <script>// These defaults will be applied to all NumPads within this document!          
+
+            $(document).ready(function () {
+                initProductLine();
+            });
+
+            function initPosLine(productId) {
+                var salesOrderId = $("#salesOrderId").val();
+
+                $("#posLine").DataTable({
+                    "destroy": true,
+                    "ajax": {
+                        "type": "GET",
+                        "url": "/Sales/GetSingleProduct/"+ productId,
+                        "dataSrc": function (dataline) {
+                            console.log(dataline)
+                            return dataline
+                        }
+                    },
+                    "columns": [
+                            { "data": "name" },
+                            { "data": "price" },
+                            {
+                             "data": "id" ,
+                            "render": function (dataline) {
+                                var datadd = '<td><input id="Quantity" class="form-control" value="1"></input> </td>';
+                                datadd += '<td><input id="Subtotal" readonly class="form-control"></input></td>';
+                                datadd += '<td><button onclick="deleteLine(\'' + dataline + '\')" class="btn btn-dark">🗑️</button></td>';
+
+
+                                return datadd;
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No hay datos para mostrar."
+                    },
+                    "lengthChange": false,
+                    "bFilter": true,
+                    "paging": false,
+                    "info": false
+                });
+
+                return false;
+            }
+
+            function LocalSubtotal(valor) {
+                document.getElementById("")
+
+            }
+
+            function initProductLine() {
+                $("#productLine").DataTable({
+                    "ajax": {
+                        "type": "GET",
+                        "url": "/Sales/GetProduct",
+                        "dataSrc": function (data) {
+                            console.log(data)
+                            return data;
+                        }
+                    },
+                    "columns": [
+                        { "data": "name" },
+                        { "data": "price" },
+                        { "data": "quantity" },
+                        {
+                            "data": "id",
+                            "render": function (data) {
+                                var btnSelect = '<button onclick="initPosLine(\'' + data + '\')" class="btn btn-success">Agregar</button>';
+                                return btnSelect;
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No hay datos para mostrar."
+                    },
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "bFilter": true,
+                    "paging": true,
+                    "info": false
+                });
+
+                return false;
+            }
+
+
+            function selectProduct(productId) {
+                var salesOrderNumber = $("#orderNumber").val();
+                if (salesOrderNumber) {
+
+                    axios.get('/Sales/GetProduct/' + productId
+                    )
+                        .then(function (response) {
+                            $("#id").val(response.data.productId);
+                            $("#name").val(response.data.name);
+                            $("#price").val(response.data.priceSell);
+                            $("#quantity").val(1);
+                            toastr.success(response.data.name + ' is selected.', 'Success')
+                        })
+                        .catch(function (error) {
+
+                        })
+                        .then(function () {
+
+                        });
+
+                } else {
+                    toastr.error('Order Number # empty. Please create new order first.', 'Error')
+                }
+
+                return false;
+            }
+
+
+</script>
+    }
+

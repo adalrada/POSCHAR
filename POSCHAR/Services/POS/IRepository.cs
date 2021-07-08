@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace POSCHAR.Services.POS
 {
 
-    //CHANGE 2.1
+    //CHANGE 2.1..
+
 
     public interface IRepository
     {

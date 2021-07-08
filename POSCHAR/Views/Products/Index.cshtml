@@ -1,0 +1,82 @@
+@model IEnumerable<POSCHAR.Models.Product>
+
+@{ ViewData["Title"] = "Index"; }
+
+<script>
+    function changeSelect() {
+        $valor = document.getElementById("searchtext").value
+        $.ajax({
+            url: 'Products/Index',
+            data: { search: $valor },
+            type: 'POST'
+        }).done(function (responseData) {
+            var $result = $(responseData).find('#bodypanel');
+            console.log($result)
+            $("#bodypanel").html('')          
+            $("#bodypanel").html($result[0].outerHTML)
+        }).fail(function () {
+            console.log('Failed');
+        });
+    }
+    document.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13 && !event.shiftKey) {
+            changeSelect();
+        }
+    });
+</script>
+
+<h1>Productos</h1>
+
+<p>
+    <a asp-action="Create">Crear producto</a>
+</p>
+
+<p>
+    <label>Buscar:</label>
+    <input type="text" class="form-control" id="searchtext" name="searchtext" />
+</p>
+<div id="bodypanel">
+    @foreach (var item in Model)
+    {
+<div class="panel panel-primary" id="panel">
+    <div class="panel-heading">
+        <h1 class="panel-title">@item.Name</h1>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-4 hidden-sm hidden-md hidden-lg">Código</div>
+            <div class="col-xs-4 col-md-3 hidden-xs">Código</div>
+            <div class="col-xs-8 col-md-9">@item.Code</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Tipo</div>
+            <div class="col-xs-8 col-md-9">@item.Type</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Precio</div>
+            <div class="col-xs-8 col-md-9">@item.Price</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Costo</div>
+            <div class="col-xs-8 col-md-9">@item.CostPrice</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Cantidad</div>
+            <div class="col-xs-8 col-md-9">@item.Quantity</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Estado</div>
+            <div class="col-xs-8 col-md-9">@item.Status</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-md-3">Categoría</div>
+            <div class="col-xs-8 col-md-9">@item.Category</div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+        <a asp-action="Details" asp-route-id="@item.Id">Ver detalle</a> |
+        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+    </div>
+</div>}
+</div>
